@@ -124,7 +124,7 @@ function App() {
                 </div>
 
                 <button type="submit" className="btn btn-primary w-100 fw-semibold py-2">
-                  ADD Product
+                 {(editId) ? "Edit Product" : " Add Product"}
                 </button>
 
                 <button type="reset"
