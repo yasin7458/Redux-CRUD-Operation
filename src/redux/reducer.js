@@ -48,10 +48,8 @@ const reducer = (state = initialData, action) => {
         case "EDIT_PRODUCT":
             return {
                 ...state,
-                products: state.products.map((product) =>
-                    product.id === action.payload.id
-                        ? action.payload
-                        : product
+                products: state.products.map((element) =>
+                    element.id == action.payload.id ? action.payload : element
                 )
             }
 
@@ -59,7 +57,7 @@ const reducer = (state = initialData, action) => {
             return {
                 ...state,
                 products: state.products.filter(
-                    (product) => product.id !== action.payload
+                    (element) => element.id != action.payload
                 )
             }
 
