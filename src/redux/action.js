@@ -5,16 +5,16 @@ export const addProduct = (product) => {
     }
 }
 
-export const editProduct = () => {
+export const editProduct = (product) => {
     return {
         type: "EDIT_PRODUCT",
         payload: product
     }
 }
 
-export const deleteProduct = () => {
+export const deleteProduct = (id) => {
     return {
         type: "DELETE_PRODUCT",
-        payload: product
+        payload: id
     }
 }

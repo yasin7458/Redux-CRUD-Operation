@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { addProduct } from "./redux/action";
+import { addProduct, editProduct, deleteProduct } from "./redux/action";
 import { useState } from "react";
 
 function App() {
@@ -10,27 +10,56 @@ function App() {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [brand, setBrand] = useState("");
+  const [editId, setEditId] = useState(null);
 
   const allData = useSelector((state) => {
     return state.products;
   });
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
 
-    dispatch(addProduct({
-      id: allData.length + 1,
-      name: pname,
-      category: category,
-      price: price,
-      brand: brand
-    }));
+    if (editId) {
 
+      dispatch(editProduct({
+        id: editId,
+        name: pname,
+        category: category,
+        price: price,
+        brand: brand
+      }));
+
+      setEditId(null);
+
+    } else {
+
+      dispatch(addProduct({
+        id: allData.length + 1,
+        name: pname,
+        category: category,
+        price: price,
+        brand: brand
+      }));
+
+    }
+
+    setEditId(null);
     setPname("");
     setCategory("");
     setPrice("");
     setBrand("");
-  };
+  }
+
+  const handleEdit = (product) => {
+
+    setEditId(product.id);
+    setPname(product.name);
+    setCategory(product.category);
+    setPrice(product.price);
+    setBrand(product.brand);
+
+  }
 
   return (
     <>
@@ -98,6 +127,19 @@ function App() {
                   ADD Product
                 </button>
 
+                <button type="reset"
+                  onClick={() => {
+                    setEditId(null);
+                    setPname("");
+                    setCategory("");
+                    setPrice("");
+                    setBrand("");
+                  }}
+                  className="btn btn-secondary w-100 fw-semibold py-2 mt-2
+                ">
+                  Reset
+                </button>
+
               </form>
 
             </div>
@@ -144,12 +186,17 @@ function App() {
                         <td className="fw-semibold py-3"> {product.brand} </td>
 
                         <td className="py-3">
-                          
-                          <button className="btn btn-warning btn-sm fw-semibold me-2 px-3">
+
+                          <button
+                            onClick={() => handleEdit(product)}
+                            className="btn btn-warning btn-sm fw-semibold me-2 px-3"
+                          >
                             Edit
                           </button>
 
-                          <button className="btn btn-danger btn-sm fw-semibold px-3">
+                          <button
+                            onClick={() => { dispatch(deleteProduct(product.id)) }}
+                            className="btn btn-danger btn-sm fw-semibold px-3">
                             Delete
                           </button>
 
